@@ -1,7 +1,13 @@
 # Category theory notes
 
-Build the PDF with
+Build the PDF. Required `pandoc` to be installed.
 
 ```
-pandoc notes.md -o notes.pdf
+make pdf
+```
+
+Continuously rebuild the PDF on file changes. Requires `fswatch` to be installed.
+
+```
+make watch
 ```
