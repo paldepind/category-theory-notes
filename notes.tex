@@ -1,0 +1,182 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{tikz-cd}
+\usepackage{amsthm}
+\usepackage{csquotes}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\tikzcdset{row sep/normal=2.7em}
+\tikzcdset{column sep/normal=3.6em}
+
+% Helpful command for typing arrows
+\newcommand{\arr}[3]{#1 : #2 \rightarrow #3}
+
+\title{Category Theory Notes}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\section{What is a category}
+
+\subsection{Definition of a category}
+ 
+\subsection{Examples of categories}
+
+\begin{itemize}
+  \item \textbf{Poset}. A poset (partially ordered set) is a set $P$ with a binary
+    relation $\leq$ that satisfies reflexivity, antisymmetry, and transivity.
+    Any poset forms a category where the elements of the category are the
+    objects of $P$ and where for two objects $a$ and $b$ there is an arrow from
+    $a$ to $b$ iff. $a \leq b$.
+\end{itemize}
+
+\section{Commutative diagrams}
+
+Wikipedia has the following thing to say about commutative diagrams.
+
+\begin{displayquote}
+  In mathematics, and especially in category theory, a commutative diagram is a
+  diagram such that all directed paths in the diagram with the same start and
+  endpoints lead to the same result. Commutative diagrams play the role in
+  category theory that equations play in algebra.
+\end{displayquote}
+
+When we draw a diagram like the following.
+\[
+\begin{tikzcd}
+  A \arrow[r, "f"] \arrow[d, "h"']
+  & B \arrow[d, "g"] \\
+  C \arrow[r, "p"] & D
+\end{tikzcd}
+\]
+It is supposed to communicate that $f \circ g = h \circ p$. In such cases we say
+the ``the diagram commutes'' to denote the properties that the diagram indicates
+that the arrows have.
+
+\section{Monomorphism and epimorphism}
+
+\subsection{Monomorphism}
+
+\begin{definition}{Monomorphism}
+  In a category $\bf{C}$, an arrow $\arr{f}{A}{B}$ is a \emph{monomorphism} if for
+  any $g, h : C \rightarrow A$ it is the case that $fg = fh \implies g = h$.
+  \[
+  \begin{tikzcd}
+    C \ar[r, shift left, "g"] \ar[r, shift right, "h"'] & A \arrow[r, "f"] & B
+  \end{tikzcd}
+  \]
+\end{definition}
+
+A monomorphism is also called a \emph{mono} and it is said to be \emph{monic}.
+
+Mnemonic: A monomorphism is the categorical equivalent to an \emph{injective}
+function, that is a one-to-one function, and \emph{mono} means \emph{one}.
+
+\begin{proposition}
+  A function $\arr{f}{A}{B}$ between sets is monic in $\bf{Sets}$ if and only if
+  it is injective.
+\end{proposition}
+\begin{proof}
+  ($\Rightarrow$) Assume $f$ is a monomorphism in $\bf{Sets}$. We must show that
+  $f$ is an injective function. Let $a, a' \in A$ where $a \neq a'$. We are done
+  if we can show that $f(a) \neq f(a')$.
+  
+  ($\Leftarrow$) Assume $f$ is an injective function. We must show that $f$ is a
+  monomorphism.
+\end{proof}
+
+\begin{definition}{Epimorphism}
+  In a category $\bf{C}$, an arrow $\arr{f}{A}{B}$ is an \emph{epimorphism} if
+  for any $\arr{i, j}{B}{D}$ it is the case that $if = jf \implies i = j$.
+
+  \begin{tikzcd}
+    A \ar[r, "f"] & B \ar[r, shift left, "i"] \ar[r, shift right, "j"'] & D
+  \end{tikzcd}
+
+  An epimorphism is said to be \emph{epic}.
+\end{definition}
+    
+\begin{proposition}
+  A function $\arr{f}{A}{B}$ between sets is an epimorphism in $\bf{Sets}$ if
+  and only if it is injective.
+\end{proposition}
+\begin{proof}
+  ($\Rightarrow$) Assume $f$ is an epimorphism. We must show that $f$ is a
+  surjective function. Let $b$ be an element in $B$. Let $d, d' \in D$ where $d
+  \neq d'$ and define $\arr{i}{B}{D}$ as the function that maps every element
+  in $B$ to $d$ except for $b$ which it maps to $d'$.
+  \[
+    i(x) = \begin{cases}
+      d' & x = b \\
+      d & \text{otherwise}
+    \end{cases}
+  \]
+  Let $\arr{j}{B}{D}$ be a constant function that sends every element to $d$.
+  \[
+    j(x) = d
+  \]
+  Since $i \neq j$ we have $if \neq jf$. Thus there exists some $a \in A$ where
+  $i(f(a)) \neq j(f(a))$. But $i$ and $j$ are equal for all arguments except
+  $b$. Hence $f(a) = b$. Since $b$ was arbitrary this shows that $f$ is
+  surjective.
+
+  ($\Leftarrow$) Assume that $f$ is a surjective function. We must show that $f$
+  is an epimorphism. Let $\arr{i, j}{B}{D}$ be arbitrary functions where $i \neq
+  j$. Then there exists some $b \in B$ where $i(b) \neq j(b)$. Since $f$ is
+  surjective there must exist an $a \in A$ where $b = f(a)$. Putting this
+  together we have:
+
+  \begin{align*}
+    i(b) &\neq j(b) && \text{since $i \neq j$} \\
+    i(f(a)) &\neq j(f(a)) && \text{from how we defined $b$}
+  \end{align*}
+
+  Therefore $if \neq jf$.
+\end{proof}
+
+\begin{proposition}
+  In a poset category all arrows are both monic and epic.
+\end{proposition}
+\begin{proof}
+  Let $\arr{f}{A}{B}$ be an arrow in a poset category. Per the definition of a
+  poset category there is always only a single arrow between two objects.
+  Therefore if we have $\arr{g, h}{C}{A}$ such that $fg = fh$ we can conclude
+  that $g = h$ since they are both arrows between $C$ and $A$. Therefore $f$ is
+  monic. Similarly, if $\arr{i, j}{B}{D}$ such that $if = jf$ then $i = j$ and
+  $f$ is a epic.
+\end{proof}
+ 
+\begin{proposition}
+  In a poset category all arrows are both monic and epic.
+\end{proposition}
+\begin{proof}
+  Let $\arr{f}{A}{B}$ be an arrow in a poset category. Per the definition of a
+  poset category there is always only a single arrow between two objects.
+  Therefore if we have $\arr{g, h}{C}{A}$ such that $fg = fh$ we can conclude
+  that $g = h$ since they are both arrows between $C$ and $A$. Therefore $f$ is
+  monic. Similarly, if $\arr{i, j}{B}{D}$ such that $if = jf$ then $i = j$ and
+  $f$ is a epic.
+\end{proof}
+\section{Products}
+
+\begin{lemma}
+  Products are unique up to isomorphism. That is, if $A \times B$ and $A' \times
+  B'$ are products in a category $\bf{C}$ then.
+  $$
+  A \times B \cong A' \times B'
+  $$
+\end{lemma}
+
+The above theorem tells us that all products are the same except for unimportant
+details.
+
+\end{document}

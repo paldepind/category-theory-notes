@@ -1,6 +1,6 @@
 # Category theory notes
 
-Build the PDF. Required `pandoc` to be installed.
+Build the PDF. Requires LaTeX to be installed.
 
 ```
 make pdf

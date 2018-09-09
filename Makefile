@@ -1,5 +1,5 @@
 pdf:
-	pandoc notes.md -o notes.pdf
+	pdflatex notes.tex
 
 watch:
-	fswatch notes.md | (while read; do make pdf; echo 'Compilation finished. Waiting for changes.'; done)
+	fswatch notes.tex | (while read; do make pdf; echo 'Compilation finished. Waiting for changes.'; done)
