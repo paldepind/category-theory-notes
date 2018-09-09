@@ -17,6 +17,7 @@
 
 % Helpful command for typing arrows
 \newcommand{\arr}[3]{#1 : #2 \rightarrow #3}
+\newcommand\id{\mathit{id}}
 
 \title{Category Theory Notes}
 \author{}
@@ -41,16 +42,8 @@
 
 \section{Commutative diagrams}
 
-Wikipedia has the following thing to say about commutative diagrams.
-
-\begin{displayquote}
-  In mathematics, and especially in category theory, a commutative diagram is a
-  diagram such that all directed paths in the diagram with the same start and
-  endpoints lead to the same result. Commutative diagrams play the role in
-  category theory that equations play in algebra.
-\end{displayquote}
-
-When we draw a diagram like the following.
+In category theory equations can be expressed using commutative diagrams. When
+we draw a diagram like the following.
 \[
 \begin{tikzcd}
   A \arrow[r, "f"] \arrow[d, "h"']
@@ -61,6 +54,18 @@ When we draw a diagram like the following.
 It is supposed to communicate that $f \circ g = h \circ p$. In such cases we say
 the ``the diagram commutes'' to denote the properties that the diagram indicates
 that the arrows have.
+
+As another example, this diagram
+\[
+  \begin{tikzcd}
+    A \arrow[r, "f"] \arrow[dr, "h"] & B \arrow[d, "g"] \\
+                                     & C
+  \end{tikzcd}
+\]
+\emph{commutes} if $f \circ g = h$.
+
+In general it is the case that for a commutative diagram all paths with the same
+origin and end are equal.
 
 \section{Monomorphism and epimorphism}
 
@@ -166,6 +171,32 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
   monic. Similarly, if $\arr{i, j}{B}{D}$ such that $if = jf$ then $i = j$ and
   $f$ is a epic.
 \end{proof}
+
+\begin{proposition}
+  An isomorphism is both monic and epic.
+\end{proposition}
+\begin{proof}
+
+\end{proof}
+
+\begin{proposition}[Inverses are unique]
+  If an arrow $\arr{f}{A}{B}$ has two inverses $\arr{g, g'}{B}{A}$ then $g =
+  g'$.
+\end{proposition}
+\begin{proof}
+  Consider the commutative diagram below.
+  \[
+    \begin{tikzcd}
+      B \arrow[r, "id_B"] \arrow[d, "g"'] & B \arrow[d, "g'"] \\
+      A \arrow[r, "id_A"'] \arrow[ru, "f"] & A
+    \end{tikzcd}
+  \]
+  From the diagram we can derive the following equality.
+  \[
+    g' = g' \id_B = g' (f g) = (g' f) g = \id_A g = g
+  \]
+\end{proof}
+
 \section{Products}
 
 \begin{lemma}
