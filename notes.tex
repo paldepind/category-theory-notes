@@ -190,7 +190,7 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
 
 \begin{proposition}
   A function $\arr{f}{A}{B}$ between sets is an epimorphism in $\bf{Sets}$ if
-  and only if it is injective.
+  and only if it is surjective.
 \end{proposition}
 \begin{proof}
   ($\Rightarrow$) Assume $f$ is an epimorphism. We must show that $f$ is a
@@ -251,11 +251,16 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
 \end{proof}
 
 \begin{proposition}
-  An isomorphism is both monic and epic.
+  Every isomorphism is also a monomorphism and epimorphism.
 \end{proposition}
 \begin{proof}
+  (Monomorphism)
+  Let $m$ be an isomorphism with inverse $m^{-1}$, then $mx = my$ implies that $x = m^{-1}mx = m^{-1}my = y$ giving us that $m$ is a monomorphism.
 
+  (Epimorphism)
+  Let $m$ be an isomorphism with inverse $m^{-1}$, then $xm = ym$ implies that $x = xm^{-1}m = ym^{-1}m = y$ giving us that $m$ is an epimorphism.
 \end{proof}
+
 
 \begin{proposition}[Inverses are unique]
   If an arrow $\arr{f}{A}{B}$ has two inverses $\arr{g, g'}{B}{A}$ then $g =
