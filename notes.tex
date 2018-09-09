@@ -26,18 +26,66 @@
 
 \maketitle
 
-\section{What is a category}
+\section{What is a category theory}
+
+``As a first approximation category theory is the abstract algebra of
+functions.'' - Steve Awodey
 
 \subsection{Definition of a category}
- 
+
+objects, A, B, C, ...
+arrows f, g, h, ...
+each function have a domain $dom(f)$ and codomain $cod(f)$
+for each composable pair of arrows $\arr{f}{A}{B}$ and $\arr{g}{B}{C}$.
+
+Laws.
+
+\begin{itemize}
+  \item Unit
+  \item Associativity
+\end{itemize}
+
 \subsection{Examples of categories}
 
 \begin{itemize}
-  \item \textbf{Poset}. A poset (partially ordered set) is a set $P$ with a binary
+  \item \textbf{Sets}. The objects are sets and the arrows are functions.
+  \item \textbf{1}. The category with one object and one arrow. It looks like this.
+    \[
+      \begin{tikzcd}
+        \bullet \arrow[loop right]
+      \end{tikzcd}
+    \]
+  \item A poset $(P, \leq)$ (partially ordered set) is a set $P$ with a binary
     relation $\leq$ that satisfies reflexivity, antisymmetry, and transivity.
     Any poset forms a category where the elements of the category are the
     objects of $P$ and where for two objects $a$ and $b$ there is an arrow from
-    $a$ to $b$ iff. $a \leq b$.
+    $a$ to $b$ iff. $a \leq b$:
+    \[
+      p \rightarrow q \iff p \leq q
+    \]
+    A category based on a poset is called a \emph{poset category}.
+
+    Note that \textbf{Poset} is a category with ``few'' arrows. Between two
+    objects $p$ and $q$ there is at most one arrow.
+
+  \item \textbf{Poset} (or \textbf{Pos}) The category where the objects are all
+    posets and the arrows are monotone functions.
+
+  \item Any monoid forms a category. The category contains a single object. Each
+    element in the monoid is an arrow in the category and composition of arrows
+    is the composition from the monoid. The identity arrow is the identity
+    element in the monoid. This construction satisfies the law of a category
+    directly from the laws of a monoid.
+
+    Note that a category based on a monoid is a category with ``few'' objects.
+    There is only a single objects. Furthermore a category with one object is
+    always a monoid. Thus, \emph{a monoid is just a category with one object}.
+
+  \item \textbf{Monoid} (or \textbf{Mon}) The category where the objects are all
+    monoid and the arrows are monoid homomorphisms.
+
+  \item \textbf{Rel}. The objects are sets and the arrows are relations.
+  \end{itemize}
 \end{itemize}
 
 \section{Commutative diagrams}
@@ -67,6 +115,36 @@ As another example, this diagram
 In general it is the case that for a commutative diagram all paths with the same
 origin and end are equal.
 
+\section{Functor}
+
+\begin{definition}[Functor]
+  A functor $\arr{F}{\mathbf{C}}{\mathbf{D}}$ is a map between categories. It
+  consists of two parts:
+  \begin{itemize}
+    \item A mapping between objects: $\arr{F_{obj}}{obj(\mathbf{C})}{obj\mathbf{D}}$.
+    \item A mapping between arrows: $\arr{F_{arr}}{arr(\mathbf{C})}{arr\mathbf{D}}$.
+  \end{itemize}
+  A functor must satisfy laws:
+  \begin{itemize}
+    \item Preserve domain and codomain.
+    \item Preserve identities. $F(\id_A) = \id_{F(A)}$
+    \item Preserve composition: $F(g \circ f) = F(g) \circ F(f)$
+  \end{itemize}
+\end{definition}
+
+\section{Isomorphism}
+
+\begin{definition}[Isomorphism]
+  An isomorphism
+\end{definition}
+
+Examples.
+\begin{itemize}
+  \item In a monoid category the isomorphisms are the elements that have an inverse.
+  \item in a group every element has an inverse. Therefore, in a group every
+    arrow is and isomorphism.
+\end{itemize}
+
 \section{Monomorphism and epimorphism}
 
 \subsection{Monomorphism}
@@ -94,7 +172,7 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
   ($\Rightarrow$) Assume $f$ is a monomorphism in $\bf{Sets}$. We must show that
   $f$ is an injective function. Let $a, a' \in A$ where $a \neq a'$. We are done
   if we can show that $f(a) \neq f(a')$.
-  
+
   ($\Leftarrow$) Assume $f$ is an injective function. We must show that $f$ is a
   monomorphism.
 \end{proof}
@@ -109,7 +187,7 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
 
   An epimorphism is said to be \emph{epic}.
 \end{definition}
-    
+
 \begin{proposition}
   A function $\arr{f}{A}{B}$ between sets is an epimorphism in $\bf{Sets}$ if
   and only if it is injective.
@@ -159,7 +237,7 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
   monic. Similarly, if $\arr{i, j}{B}{D}$ such that $if = jf$ then $i = j$ and
   $f$ is a epic.
 \end{proof}
- 
+
 \begin{proposition}
   In a poset category all arrows are both monic and epic.
 \end{proposition}
@@ -209,5 +287,16 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
 
 The above theorem tells us that all products are the same except for unimportant
 details.
+
+\begin{lemma}
+  In a category with binary products the binary product operation $A \times B$
+  is associative up to isomorphism.
+  \[
+    (A \times B) \times C \cong a \times (B \times C)
+  \]
+\end{lemma}
+\begin{proof}
+
+\end{proof}
 
 \end{document}
