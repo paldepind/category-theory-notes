@@ -33,13 +33,15 @@ functions.'' - Steve Awodey
 
 \subsection{Definition of a category}
 
-objects, A, B, C, ...
-arrows f, g, h, ...
-each function have a domain $dom(f)$ and codomain $cod(f)$
-for each composable pair of arrows $\arr{f}{A}{B}$ and $\arr{g}{B}{C}$.
+A category consists of
+\begin{itemize}
+  \item objects, A, B, C, ...
+  \item arrows f, g, h, ... each function have a domain $dom(f)$ and codomain
+    $cod(f)$ for each composable pair of arrows $\arr{f}{A}{B}$ and
+    $\arr{g}{B}{C}$.
+\end{itemize}
 
-Laws.
-
+A category must satisfy the following laws.
 \begin{itemize}
   \item Unit
   \item Associativity
@@ -98,9 +100,9 @@ we draw a diagram like the following.
   C \arrow[r, "p"] & D
 \end{tikzcd}
 \]
-It is supposed to communicate that $f \circ g = h \circ p$. In such cases we say
-the ``the diagram commutes'' to denote the properties that the diagram indicates
-that the arrows have.
+It is supposed to communicate that $f \circ g = h \circ p$. In such cases we
+say the ``the diagram commutes'' to denote the properties that the diagram
+indicates that the arrows have.
 
 As another example, consider this diagram:
 \[
@@ -127,7 +129,7 @@ Universal mapping properties determine things uniquely up to isomorphism.
   consists of two parts:
   \begin{itemize}
   \item A mapping between objects:
-    $\arr{F_{obj}}{obj(\mathbf{C})}{(obj\mathbf{D}})$.
+    $\arr{F_{obj}}{obj(\mathbf{C})}{(obj\mathbf{D})}$.
   \item A mapping between arrows:
     $\arr{F_{arr}}{arr(\mathbf{C})}{(arr\mathbf{D})}$.
   \end{itemize}
@@ -175,8 +177,8 @@ Examples.
 \subsection{Monomorphism}
 
 \begin{definition}{Monomorphism}
-  In a category $\bf{C}$, an arrow $\arr{f}{A}{B}$ is a \emph{monomorphism} if for
-  any $g, h : C \rightarrow A$ it is the case that $fg = fh \implies g = h$.
+  In a category $\bf{C}$, an arrow $\arr{f}{A}{B}$ is a \emph{monomorphism} if
+  for any $g, h : C \rightarrow A$ it is the case that $fg = fh \implies g = h$.
   \[
   \begin{tikzcd}
     C \ar[r, shift left, "g"] \ar[r, shift right, "h"'] & A \arrow[r, "f"] & B
@@ -279,13 +281,33 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
   Every isomorphism is also a monomorphism and epimorphism.
 \end{proposition}
 \begin{proof}
-  (Monomorphism)
-  Let $m$ be an isomorphism with inverse $m^{-1}$, then $mx = my$ implies that $x = m^{-1}mx = m^{-1}my = y$ giving us that $m$ is a monomorphism.
+  (Monomorphism) Let $m$ be an isomorphism with inverse $m^{-1}$, then $mx = my$
+  implies that $x = m^{-1}mx = m^{-1}my = y$ giving us that $m$ is a
+  monomorphism.
 
-  (Epimorphism)
-  Let $m$ be an isomorphism with inverse $m^{-1}$, then $xm = ym$ implies that $x = xm^{-1}m = ym^{-1}m = y$ giving us that $m$ is an epimorphism.
+  (Epimorphism) Let $m$ be an isomorphism with inverse $m^{-1}$, then $xm = ym$
+  implies that $x = xm^{-1}m = ym^{-1}m = y$ giving us that $m$ is an
+  epimorphism.
 \end{proof}
 
+\begin{definition}[Split mono and split epic]
+  An arrow $\arr{f}{A}{B}$ is a \emph{split mono} if it has a \emph{left}
+  inverse. That is, an arrow $\arr{g}{C}{A}$ such that
+  \[ gf = \id_A \]
+
+  An arrow $\arr{f}{A}{B}$ is a \emph{split epi} if it has a \emph{right}
+  inverse. That is, an arrow $\arr{g}{B}{C}$ such that
+  \[ fg = \id_B \]
+\end{definition}
+
+\subsection{A summary of monos, epis, and split monos and epis}
+
+\begin{itemize}
+\item A mono cancels on the \emph{left}: $\forall g, h.\ fg = fh \implies g = h$.
+\item A split mono is an arrow with a \emph{left} inverse: $\exists g.\ gf = \id_A$.
+\item An epi cancels on the \emph{right} $\forall i, j.\ if = jf \implies i = j$.
+\item A split epi is an arrow with a \emph{right} inverse: $\exists g.\ fg = \id_B$.
+\end{itemize}
 
 \begin{proposition}[Inverses are unique]
   If an arrow $\arr{f}{A}{B}$ has two inverses $\arr{g, g'}{B}{A}$ then $g =
@@ -413,11 +435,70 @@ details.
 
 \section{Exercises}
 
+\subsection{2.4}
+
+Consider the commutative triangle,
+\[
+  \begin{tikzcd}
+    A \arrow[r, "f"] \arrow[dr, "h"] & B \arrow[d, "g"] \\
+                                     & B
+  \end{tikzcd}
+\]
+In other words the situration where $h = fg$.
+\begin{itemize}
+  \item if $f$ and $g$ are isos then so is $h$. This is true because
+    isomorphisms compose into isomorphisms.
+  \item if $f$ and $g$ are monos then so is $h$. 
+    \begin{align*}
+      h a &= h a' \\
+      g f a &= g f a' \\
+      f a &= f a' && \text{because $g$ is a mono} \\
+      a &= a' && \text{because $f$ is a mono} \\
+    \end{align*}
+    Therefore $h$ is a mono.
+  \item if $f$ and $g$ are epis then so is $h$.
+    \begin{align*}
+      a h &= a' h \\
+      a g f &= a' g f \\
+      a g &= a' g && \text{because $f$ is an epi} \\
+      a &= a' && \text{because $g$ is an epi} \\
+    \end{align*}
+    Therefore $g$ is an epi.
+  \item if $h$ is monic then so is $f$.
+
+  \item if $h$ is monic then so is $g$.
+\end{itemize}
+
+\subsection{2.5}
+
+(a) $\implies$ (b): Assume $f$ is an isomorphism. We know that any isomorphism
+is a mono. $f f^{-1} = \id_B$ so $f$ has a left inverse and is a split epi.
+
+(b) $\implies$ (c): Assume $f$ is a mono and a split epi. There exists an $e$
+such that $fe = \id$. To show that $f$ is an epi let $\arr{i, j}{B}{D}$ and
+consider
+\[
+  if = jf \implies ife = jfe \implies i = j
+\]
+So $f$ is an epi. To show that $f$ is a split mono we must find a $g$ such that
+$gf = id_A$.
+
+(c) $\implies$ (d):
+
+(d) $\implies$ (a): Assume $f$ is both a split mono and a split epi. We know
+that there exists a $\arr{g}{B}{A}$ such that $gf = \id_A$ and a
+$\arr{g'}{B}{A}$ such that $fg' = \id_B$. Putting this together we have.
+\[
+  g = g \id_B = g (f g') = (g f) g' = \id_A = g'
+\]
+Thus $gf = \id_A$ and $fg = \id_B$. This makes $g$ an inverse for $f$ which
+makes $f$ and isomorphism.
+
 \subsection{2.15}
 
 Assume $A$ and $B$ have a product in $C$: $A \times B = (P, p_1, p_2)$. Clearly
-this triple is an object in $\mathbf{C}$. Consider now any object $Q = (X, x_1, x_2)$ in
-$\mathbf{C}$. Since $A \times B$ is a product we have, from the UMP for
+this triple is an object in $\mathbf{C}$. Consider now any object $Q = (X, x_1,
+x_2)$ in $\mathbf{C}$. Since $A \times B$ is a product we have, from the UMP for
 products, that there is a unique morphism from $Q$ to $A \times B$.
 
 Assume that $\mathbf{C}_{A, B}$ has a terminal object $(X, x_1, x_2)$. Observe
@@ -435,5 +516,7 @@ The fact that $(X, x_1, x_2)$ is a terminal objects mean that there exists a
 unique $f$ that makes the diagram commute. But this is exactly the UMP for
 products and implies that $(X, x_1, x_2)$ is a product for $A$ and $B$ in
 $\mathbf{C}$.
+
+\subsection{2.17}
 
 \end{document}
