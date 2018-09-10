@@ -85,7 +85,6 @@ Laws.
     monoid and the arrows are monoid homomorphisms.
 
   \item \textbf{Rel}. The objects are sets and the arrows are relations.
-  \end{itemize}
 \end{itemize}
 
 \section{Commutative diagrams}
@@ -103,17 +102,23 @@ It is supposed to communicate that $f \circ g = h \circ p$. In such cases we say
 the ``the diagram commutes'' to denote the properties that the diagram indicates
 that the arrows have.
 
-As another example, this diagram
+As another example, consider this diagram:
 \[
   \begin{tikzcd}
     A \arrow[r, "f"] \arrow[dr, "h"] & B \arrow[d, "g"] \\
                                      & C
   \end{tikzcd}
 \]
-\emph{commutes} if $f \circ g = h$.
+We say that the triangle \emph{commutes} if $f \circ g = h$.
 
 In general it is the case that for a commutative diagram all paths with the same
 origin and end are equal.
+
+\section{Universal Mapping Properties}
+
+A universal mapping property is used to define things in categorical way.
+
+Universal mapping properties determine things uniquely up to isomorphism.
 
 \section{Functor}
 
@@ -121,21 +126,25 @@ origin and end are equal.
   A functor $\arr{F}{\mathbf{C}}{\mathbf{D}}$ is a map between categories. It
   consists of two parts:
   \begin{itemize}
-    \item A mapping between objects: $\arr{F_{obj}}{obj(\mathbf{C})}{obj\mathbf{D}}$.
-    \item A mapping between arrows: $\arr{F_{arr}}{arr(\mathbf{C})}{arr\mathbf{D}}$.
+  \item A mapping between objects:
+    $\arr{F_{obj}}{obj(\mathbf{C})}{(obj\mathbf{D}})$.
+  \item A mapping between arrows:
+    $\arr{F_{arr}}{arr(\mathbf{C})}{(arr\mathbf{D})}$.
   \end{itemize}
-  A functor must satisfy laws:
+  However, we usually just write $F$ and treat it as an overloaded function that
+  can be applied to both arrows and objects. A functor must satisfy three laws:
   \begin{itemize}
-    \item Preserve domain and codomain.
+  \item Preserves domain and codomain. $F(\arr{f}{A}{B}) =
+    \arr{F(f)}{F(A)}{F(B)}$
     \item Preserve identities. $F(\id_A) = \id_{F(A)}$
     \item Preserve composition: $F(g \circ f) = F(g) \circ F(f)$
   \end{itemize}
 \end{definition}
 
-\section{Isomorphism}
+\section{Isomorphisms}
 
 \begin{definition}[Isomorphism]
-  An isomorphism
+  An isomorphism is an arrow with an inverse.
 \end{definition}
 
 Examples.
@@ -144,6 +153,22 @@ Examples.
   \item in a group every element has an inverse. Therefore, in a group every
     arrow is and isomorphism.
 \end{itemize}
+
+\begin{proposition}
+  If $\arr{f}{A}{B}$ and $\arr{g}{B}{C}$ are isomorphisms then their composition
+  $f \circ g$ is also an isomorphism and the inverse is
+  \[ (f \circ g)^{-1} = g^{-1} \circ f^{-1} \]
+  This means that isomorphisms compose into isomorphisms
+\end{proposition}
+\begin{proof}
+  First we show that $g^{-1} \circ f^{-1}$ is a right inverse.
+  \[ (f \circ g) \circ (g^{-1} \circ f^{-1}) = f \circ (g \circ g^{-1}) \circ
+    f^{-1} = f \circ f^{-1} = id_A \]
+
+  Then we show that $g^{-1} \circ f^{-1}$ is a left inverse.
+  \[ (g^{-1} \circ f^{-1}) \circ (f \circ g) = g^{-1} \circ (f^{-1} \circ f)
+    \circ g = g^{-1} \circ g = id_B\]
+\end{proof}
 
 \section{Monomorphism and epimorphism}
 
@@ -280,7 +305,86 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
   \]
 \end{proof}
 
+\section{Initial and terminal objects}
+
+\begin{definition}[Initial]
+  An object $0$ is terminal if for any object $C$ there is a unique morphism
+  $\arr{F}{0}{C}$.
+  \[
+    \begin{tikzcd}
+      0 \arrow[r, dashrightarrow, "f"] & C
+    \end{tikzcd}
+  \]
+  Note that this is a universal mapping property. $\forall C \exists! f$.
+\end{definition}
+
+\begin{definition}[Terminal]
+  An object $1$ is terminal if for any object $C$ there is a unique morphism
+  $\arr{F}{C}{1}$.
+  \[
+    \begin{tikzcd}
+      C \arrow[r, dashrightarrow, "f"] & 1
+    \end{tikzcd}
+  \]
+  Note that this is a universal mapping property. $\forall C \exists! f$.
+\end{definition}
+
 \section{Products}
+
+\begin{definition}[Product]
+  A product of two objects $A$ and $B$ consists of an object $P$ and two
+  projection arrows $\arr{p_1}{P}{A}$ and $\arr{p_2}{P}{B}$.
+  \[
+    \begin{tikzcd}
+      A & P \arrow[l, "p_1"'] \arrow[r, "p_2"] & B
+    \end{tikzcd}
+  \]
+  The above must satisfy the universal mapping property that $\forall x, f_1,
+  f_2 \exists! u$ such that the following diagram commutes.
+  \[
+    \begin{tikzcd}
+      & X \arrow[ld, "x_1"'] \arrow[d, dashrightarrow, "u"] \arrow[rd, "x_1"] \\
+      A & P \arrow[l, "p_1"] \arrow[r, "p_2"'] & B
+    \end{tikzcd}
+  \]
+\end{definition}
+
+Let us try an unpack that definition. Note that the definition doesn't say
+anything about what a product \emph{is}. It only describes a property that a
+product should have in order for it to be a product. But, why does that
+definition make sense?
+
+Consider a programming library that implements a product or pair data-structure
+in a programming language. It would have to expose a constructor for pairs
+\texttt{makePair : A -> B -> Pair A B} and two functions for extracting values
+again \texttt{fst : Pair A B -> A} and \texttt{snd : Pair A B -> B}. As a user
+of such a library we would expect that creating a pair of two elements and
+extracting them again gives us the exact same elements that we put in. In other
+words we expect that for any $a$ it is the case that \texttt{fst (makePair a b)
+  == a}. This is exactly what the existence part of the definition says. If $P$
+is a product and we have an object $X$ from which we can extract two values
+$x_1$ and $x_2$ (i.e. $X$ contains $x_1$ and $x_2$) then there must be a way to
+construct a product based on $X$ such that when we later extract the two values
+with $p_1$ and $p_2$ we get back the exact same value that we had in $X$. The
+UMP ensures that the pair data-structure doesn't ``mess'' with the elements we
+insert into it. The uniqueness part of the definition requires that there is
+only one possible way for $P$ to store the two values that we have in $X$. This
+means that it must not be possible for $P$ to support two different
+\texttt{makePair} functions.
+
+\subsection{Non-examples of products}
+
+\begin{itemize}
+\item Define a product of sets as follows:
+  \[ A \times B = \{ (n, a, b) \mid n \in \{ 0, 1 \}, a \in A, b \in B \}\]
+  With the two projection functions.
+  \begin{align*}
+    \pi_1(n, a, b) = \begin{cases} a & n = 0 \\ b & n = 1 \end{cases} &&
+    \pi_2(n, a, b) = \begin{cases} b & n = 0 \\ a & n = 1 \end{cases}
+  \end{align*}
+  This is not a product since it does not satisfy the uniqueness constraint in
+  the UMP that a product must satisfy.
+\end{itemize}
 
 \begin{lemma}
   Products are unique up to isomorphism. That is, if $A \times B$ and $A' \times
@@ -289,6 +393,9 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
   A \times B \cong A' \times B'
   $$
 \end{lemma}
+\begin{proof}
+  TODO
+\end{proof}
 
 The above theorem tells us that all products are the same except for unimportant
 details.
@@ -303,5 +410,30 @@ details.
 \begin{proof}
 
 \end{proof}
+
+\section{Exercises}
+
+\subsection{2.15}
+
+Assume $A$ and $B$ have a product in $C$: $A \times B = (P, p_1, p_2)$. Clearly
+this triple is an object in $\mathbf{C}$. Consider now any object $Q = (X, x_1, x_2)$ in
+$\mathbf{C}$. Since $A \times B$ is a product we have, from the UMP for
+products, that there is a unique morphism from $Q$ to $A \times B$.
+
+Assume that $\mathbf{C}_{A, B}$ has a terminal object $(X, x_1, x_2)$. Observe
+that an arrow $\arr{f}{Y, y_1, y_2}{X, x_1, x_2}$ is one that makes the
+following diagram commute.
+
+\[
+  \begin{tikzcd}
+    & Y \arrow[ld, "y_1"'] \arrow[d, dashrightarrow, "f"] \arrow[rd, "y_1"] \\
+    A & X \arrow[l, "x_1"] \arrow[r, "x_2"'] & B
+  \end{tikzcd}
+\]
+
+The fact that $(X, x_1, x_2)$ is a terminal objects mean that there exists a
+unique $f$ that makes the diagram commute. But this is exactly the UMP for
+products and implies that $(X, x_1, x_2)$ is a product for $A$ and $B$ in
+$\mathbf{C}$.
 
 \end{document}
