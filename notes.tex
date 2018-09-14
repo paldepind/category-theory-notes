@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass{book}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{hyperref}
@@ -18,6 +18,7 @@
 % Helpful command for typing arrows
 \newcommand{\arr}[3]{#1 : #2 \rightarrow #3}
 \newcommand\id{\mathit{id}}
+\newcommand\Hom{\text{Hom}}
 
 \title{Category Theory Notes}
 \author{}
@@ -26,7 +27,12 @@
 
 \maketitle
 
-\section{What is a category theory}
+\tableofcontents
+\newpage
+
+\chapter{Category theory}
+
+\section{What is category theory}
 
 ``As a first approximation category theory is the abstract algebra of
 functions.'' - Steve Awodey
@@ -115,6 +121,13 @@ We say that the triangle \emph{commutes} if $f \circ g = h$.
 
 In general it is the case that for a commutative diagram all paths with the same
 origin and end are equal.
+
+\section{Constructing categories}
+
+For a category $C$, its opposite category $C^{op}$ is the category obtained by
+formally reversing the direction of all its arrows.
+
+% FIXME: What does formal mean in the definitio above?
 
 \section{Universal Mapping Properties}
 
@@ -215,6 +228,12 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
   An epimorphism is said to be \emph{epic}.
 \end{definition}
 
+Why does a surjective funtion satisfy $if = jf \implies i = j$. Intuitively
+since $f$ reaches its entire domain then any differences in $i$ and $j$ whould
+be exposed in the composition. If there was some elements in $B$ that where
+never reached by $f$ then the functions $i$ and $j$ could differ for those
+elements such that $if = jf$ without $i = j$ being true.
+
 \begin{proposition}
   A function $\arr{f}{A}{B}$ between sets is an epimorphism in $\bf{Sets}$ if
   and only if it is surjective.
@@ -300,13 +319,15 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
   \[ fg = \id_B \]
 \end{definition}
 
+When a mono is a split mono we say that the \emph{mono splits}.
+
 \subsection{A summary of monos, epis, and split monos and epis}
 
 \begin{itemize}
-\item A mono cancels on the \emph{left}: $\forall g, h.\ fg = fh \implies g = h$.
-\item A split mono is an arrow with a \emph{left} inverse: $\exists g.\ gf = \id_A$.
-\item An epi cancels on the \emph{right} $\forall i, j.\ if = jf \implies i = j$.
-\item A split epi is an arrow with a \emph{right} inverse: $\exists g.\ fg = \id_B$.
+\item A mono cancels on the \emph{left}: $\forall g, h : fg = fh \implies g = h$.
+\item A split mono is an arrow with a \emph{left} inverse: $\exists g : gf = \id_A$.
+\item An epi cancels on the \emph{right} $\forall i, j : if = jf \implies i = j$.
+\item A split epi is an arrow with a \emph{right} inverse: $\exists g : fg = \id_B$.
 \end{itemize}
 
 \begin{proposition}[Inverses are unique]
@@ -337,6 +358,14 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
       0 \arrow[r, dashrightarrow, "f"] & C
     \end{tikzcd}
   \]
+  In other words an initial object is an object that has a single arrow to all
+  other objects. Visually it looks like this.
+  \[
+    \begin{tikzcd}
+      & 0 \arrow[ld] \arrow[d] \arrow[rd] \\
+      A & B & C
+    \end{tikzcd}
+  \]
   Note that this is a universal mapping property. $\forall C \exists! f$.
 \end{definition}
 
@@ -348,10 +377,20 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
       C \arrow[r, dashrightarrow, "f"] & 1
     \end{tikzcd}
   \]
-  Note that this is a universal mapping property. $\forall C \exists! f$.
+  In other words a terminal object is an object that every other object has a
+  single arrow towards. Visually it looks like this.
+  \[
+    \begin{tikzcd}
+      A \arrow[rd] & B \arrow[d] & C \arrow[ld] \\
+      & 1
+    \end{tikzcd}
+  \]
+  Note that this is an universal mapping property. $\forall C \exists! f$.
 \end{definition}
 
 \section{Products}
+
+\subsection{Binary product}
 
 \begin{definition}[Product]
   A product of two objects $A$ and $B$ consists of an object $P$ and two
@@ -394,6 +433,12 @@ only one possible way for $P$ to store the two values that we have in $X$. This
 means that it must not be possible for $P$ to support two different
 \texttt{makePair} functions.
 
+In the general case it is not possible to turn two objects into a pair. That is,
+if $A$ and $B$ is two objects $A \times B$ may not exist in the category. If a
+category has a product for every pair of objects then the category is said to
+\emph{have binary products} and is said to be \emph{a category with binary
+  products}.
+
 \subsection{Non-examples of products}
 
 \begin{itemize}
@@ -433,7 +478,48 @@ details.
 
 \end{proof}
 
-\section{Exercises}
+\section{Hom-sets}
+
+\begin{definition}
+  Given a locally small category $\bf{C}$ and objects $A$ and $B$ the set
+  $\Hom(A, B)$ is all the homomorphisms from $A$ to $B$.
+
+  \begin{align*}
+    \Hom_{\mathbf{C}}(A, B) &= \text{ all arrows from } A \text{ to } B \\
+                          &= \{ f \in \mathbf{C} \mid f : A \rightarrow B \}
+  \end{align*}
+\end{definition}
+
+Such a set of arrows is called a \emph{Hom-set}. Since $\Hom(A, B)$ is an
+element in $\mathbf{Sets}$ this function gives us a way to turn any pair of
+objects in any (locally small) category into an \emph{object in
+  $\mathbf{Sets}$}.
+
+Based on this we can define a function.
+\begin{align*}
+  \Hom(A, g) : \Hom(A, B) \to \Hom(A, B') \\
+  (f : A \to B) \mapsto (g \circ f : A \to B \to B')
+\end{align*}
+
+Note that the notation is overloaded! $\Hom(A, B)$ is the set of all arrows from
+$A$ to $B$. But $\Hom(A, g)$ is a function from arrows from $A$ to $B$
+($\Hom(A, B)$) to arrows from $A$ to $B'$ ($\Hom(A, B')$).
+
+\begin{itemize}
+\item For an \emph{object} $B$: $\Hom(A, B)$ is an \emph{object} in $\mathbf{Sets}$.
+\item For an \emph{arrow} $g$: $\Hom(A, g)$ is an \emph{arrow} in $\mathbf{Sets}$.
+\end{itemize}
+
+Note that the overloading above is the exact same overloading that we use with
+functors. In other words we have exactly the ingredients for a functor.
+
+\section{Duality}
+
+
+
+\chapter{Exercises}
+
+\section{2}
 
 \subsection{2.4}
 
@@ -444,11 +530,11 @@ Consider the commutative triangle,
                                      & B
   \end{tikzcd}
 \]
-In other words the situration where $h = fg$.
+In other words the situration where $h = gf$.
 \begin{itemize}
   \item if $f$ and $g$ are isos then so is $h$. This is true because
     isomorphisms compose into isomorphisms.
-  \item if $f$ and $g$ are monos then so is $h$. 
+  \item if $f$ and $g$ are monos then so is $h$.
     \begin{align*}
       h a &= h a' \\
       g f a &= g f a' \\
@@ -464,15 +550,30 @@ In other words the situration where $h = fg$.
       a &= a' && \text{because $g$ is an epi} \\
     \end{align*}
     Therefore $g$ is an epi.
-  \item if $h$ is monic then so is $f$.
-
-  \item if $h$ is monic then so is $g$.
+  \item if $h$ is monic then so is $f$. Assume $h$ is monic.
+    \[
+      f x = f x' \implies g f x = g f x' \implies h x = h x' \implies x = x'
+    \]
+    So $f$ is monic.
+  \item if $h$ is monic then so is $g$. Assume $g$ is monic. \[ x g = x' g
+    \implies x g f = x' g f \implies x h = x' h \implies x = x' \]
+  \item $h$ can be monic without $g$ being monic. Consider the category
+    $\bf{Sets}$. Let $\arr{h}{\{1\}}{\{3\}}$. Define $\arr{f}{\{1\}}{\{1,2\}}$
+    as the function that maps $1$ to $2$. Definet $\arr{g}{\{1,2\}}{\{3\}}$ as
+    the function that maps both $1$ and $2$ to $3$. Clearly $g$ is not
+    surjective and thus not monic. But $h = g \circ f$ is surjective and thus
+    monic. Is an injective function.
 \end{itemize}
+
+An arrow is not nececarilly an isomorphism even if it is monic and epic.
 
 \subsection{2.5}
 
 (a) $\implies$ (b): Assume $f$ is an isomorphism. We know that any isomorphism
 is a mono. $f f^{-1} = \id_B$ so $f$ has a left inverse and is a split epi.
+
+(b) -> (c): \[ f \id = f = (f f^{-1}) f = f (f^{-1} f)  \] Derfor per mono er
+\[ f^{-1} f = \id \]
 
 (b) $\implies$ (c): Assume $f$ is a mono and a split epi. There exists an $e$
 such that $fe = \id$. To show that $f$ is an epi let $\arr{i, j}{B}{D}$ and
@@ -518,5 +619,27 @@ products and implies that $(X, x_1, x_2)$ is a product for $A$ and $B$ in
 $\mathbf{C}$.
 
 \subsection{2.17}
+
+\section{3}
+
+\subsection{1
+
+\subsection{2}
+
+\subsection{3}
+
+\subsection{4}
+
+\subsection{6}
+
+\subsection{10}
+
+\subsection{11}
+
+\subsection{12}
+
+\subsection{13}
+
+\subsection{14}
 
 \end{document}
