@@ -12,7 +12,7 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
 \newtheorem{lemma}{Lemma}
-\tikzcdset{row sep/normal=2.7em}
+\tikzcdset{row sep/normal=3.0em}
 \tikzcdset{column sep/normal=3.6em}
 
 % Helpful command for typing arrows
@@ -39,19 +39,28 @@ functions.'' - Steve Awodey
 
 \subsection{Definition of a category}
 
-A category consists of
+A category $\mathbf{C}$ consists of
 \begin{itemize}
-  \item objects, A, B, C, ...
-  \item arrows f, g, h, ... each function have a domain $dom(f)$ and codomain
-    $cod(f)$ for each composable pair of arrows $\arr{f}{A}{B}$ and
-    $\arr{g}{B}{C}$.
+\item Objects. $A, B, C, \dots$
+  \item arrows $f, g, h, \dots$ each function have a domain $dom(f)$ and
+    codomain $cod(f)$
 \end{itemize}
 
-A category must satisfy the following laws.
+A category must satisfy the following laws. For each composable pair of arrows
+$\arr{f}{A}{B}$ and $\arr{g}{B}{C}$.
 \begin{itemize}
   \item Unit
   \item Associativity
+    The following diagram commutes.
+    \[
+      \begin{tikzcd}
+        A \ar[rr, bend right, "f \circ g"'] \ar[r, "f"] & \ar[rr, bend left, "g \circ h"] B \ar[r, "g"] & C \ar[r, "h"] & D
+      \end{tikzcd}
+    \]
 \end{itemize}
+
+In general there can be many, even infinitely many, arrows between two objects.
+There can also be none at all.
 
 \subsection{Examples of categories}
 
@@ -76,14 +85,17 @@ A category must satisfy the following laws.
     Note that \textbf{Poset} is a category with ``few'' arrows. Between two
     objects $p$ and $q$ there is at most one arrow.
 
+    % TODO: Explain why not all $f : A \to B$ are id in Sets.
+
   \item \textbf{Poset} (or \textbf{Pos}) The category where the objects are all
     posets and the arrows are monotone functions.
 
-  \item Any monoid forms a category. The category contains a single object. Each
-    element in the monoid is an arrow in the category and composition of arrows
-    is the composition from the monoid. The identity arrow is the identity
-    element in the monoid. This construction satisfies the law of a category
-    directly from the laws of a monoid.
+  \item A monoid is a triple $(S, \oplus, e)$. Any monoid forms a category. The
+    category contains a single object. Each element in the monoid is an arrow in
+    the category and composition of arrows is the composition from the
+    monoid. The identity arrow is the identity element in the monoid. This
+    construction satisfies the law of a category directly from the laws of a
+    monoid.
 
     Note that a category based on a monoid is a category with ``few'' objects.
     There is only a single objects. Furthermore a category with one object is
@@ -124,16 +136,27 @@ origin and end are equal.
 
 \section{Constructing categories}
 
-For a category $C$, its opposite category $C^{op}$ is the category obtained by
-formally reversing the direction of all its arrows.
+\subsection{Opposite category}
 
-% FIXME: What does formal mean in the definitio above?
+For a category $C$, its opposite category, denoted $C^{op}$, is the category
+obtained by formally reversing the direction of all its arrows. Each object $A$
+in $\mathbf{C}$ is an object in $\mathbf{C}^{op}$ and earch arrow $f : A \to B$ in
+$\mathbf{C}$ is an arrow $f : B \to A$ in $\mathbf{C}^{op}$. It is important to
+understand that this is a formal operation that can be applied to any category
+$C$.
+
+One way that one should \emph{note} think about $C^{opposite}$ is as something
+that reverses each arrow.
 
 \section{Universal Mapping Properties}
 
-A universal mapping property is used to define things in categorical way.
+A universal mapping property is used to define things in a categorical way.
 
 Universal mapping properties determine things uniquely up to isomorphism.
+
+Saying that there exists a \emph{unique} something is the same as saying that
+there exists a \emph{single} something which is the same as saying that there is
+exactly one something.
 
 \section{Functor}
 
@@ -351,8 +374,8 @@ When a mono is a split mono we say that the \emph{mono splits}.
 \section{Initial and terminal objects}
 
 \begin{definition}[Initial]
-  An object $0$ is terminal if for any object $C$ there is a unique morphism
-  $\arr{F}{0}{C}$.
+  An object $0$ is \emph{initial} if for any object $C$ there is a unique
+  morphism $\arr{F}{0}{C}$.
   \[
     \begin{tikzcd}
       0 \arrow[r, dashrightarrow, "f"] & C
@@ -370,8 +393,8 @@ When a mono is a split mono we say that the \emph{mono splits}.
 \end{definition}
 
 \begin{definition}[Terminal]
-  An object $1$ is terminal if for any object $C$ there is a unique morphism
-  $\arr{F}{C}{1}$.
+  An object $1$ is \emph{terminal} if for any object $C$ there is a unique
+  morphism $\arr{F}{C}{1}$.
   \[
     \begin{tikzcd}
       C \arrow[r, dashrightarrow, "f"] & 1
@@ -388,9 +411,64 @@ When a mono is a split mono we say that the \emph{mono splits}.
   Note that this is an universal mapping property. $\forall C \exists! f$.
 \end{definition}
 
+Terminal objects are also sometimes called \emph{final}.
+
+\subsection{Poset}
+
+In a poset an initial object is one that is smaller than or equal to any other
+object. A terminal object is one that is greater than or equal to any other
+object.
+
+In a bounded lattice the bottom element $\bot$ is the only initial object and the
+top element $\bot$ is the only terminal object. As such we may write
+\begin{align*}
+  0 = \bot, \quad 1 = \top
+\end{align*}
+This example provides a rationale and some intuition for the names $0$ and $1$.
+
+\begin{proposition}
+  Initial/terminal objects are unique up to a unique isomorphism. That is,
+  \begin{itemize}
+  \item If $0$ and $0'$ are both initial objects in a category $\mathbf{C}$
+    then $0 \cong 0'$ and the isomorphism is unique.
+  \item If $1$ and $1'$ are both terminal objects in a category $\mathbf{C}$
+    then $1 \cong 1'$ and the isomorphism is unique.
+  \end{itemize}
+\end{proposition}
+\begin{proof}
+  Let $0$ and $0'$ be two initial objects. Since $0$ is an initial object there
+  exists a unique arrow $f : 0 \to 0'$. Since any object has the identity arrow,
+  $f$ must be the identity arrow $f = \id_{0}$. As both $0$ and $0'$ are initial
+  objects there exist a unique arrow $f : 0 \to 0'$ and a unique arrow
+  $g : 0' \to 0$. The composition $f \circ g$ is an arrow from $0'$ to $0$. But we
+  know that the only arrow from $0'$ to $0$ is $\id_{0'}$. Similarly,
+  $g \circ f$ is an arrow from $0$ to $0'$ and it must be equal to $\id_{0}$. Put
+  together this means that $g$ is an inverse to $f$. Hence $f$ is an
+  isomorphism.
+  \[
+    \begin{tikzcd}
+      0 \ar[r, "f"] \ar[dr, "\id_{0}"'] & 0' \ar[d, "g"] \ar[dr, "\id_{0'}"] \\
+      & 0 \ar[r, "f"] & 0'
+    \end{tikzcd}
+  \]
+  \[
+    \begin{tikzcd}
+      0 \ar[r, bend left, "f"] \ar[loop left, "\id_{0}"] & 0' \ar[l, bend left, "g"] \ar[loop right, "\id_{0'}"]
+    \end{tikzcd}
+  \]
+\end{proof}
+
 \section{Products}
 
 \subsection{Binary product}
+
+Since a category is a thing that can basically only do composition one might
+think that there is not much one can define based on this. However, we will see
+that it is actually possible to create many definitions based only on this. Now
+we will see how to define a notion of a \emph{product} or a pair. Intuitively a
+pair is some data-structure that can hold two elements. But that is not very
+precise. It turns out that by using category theory we can make this much more
+precise.
 
 \begin{definition}[Product]
   A product of two objects $A$ and $B$ consists of an object $P$ and two
@@ -438,6 +516,27 @@ if $A$ and $B$ is two objects $A \times B$ may not exist in the category. If a
 category has a product for every pair of objects then the category is said to
 \emph{have binary products} and is said to be \emph{a category with binary
   products}.
+
+\subsubsection{Notation}
+
+If two objects $A$ and $B$ have a product, we write
+\[
+  \begin{tikzcd}
+    A & A \times B \arrow[l, "p_1"'] \arrow[r, "p_2"] & B
+  \end{tikzcd}
+\]
+Now for any $X, x_{1}, x_{2}$ the notation $\langle x_1, x_2 \rangle$ denotes the unique
+arrow $u : X \to A \times B$ from the UMP. Beware! One might think that
+$\langle x, y \rangle$ would mean an actual pair of elements similarly to how
+$(x, y)$ denotes a pair. This is not the case. It is an arrow as shown in the
+diagram below.
+
+\[
+  \begin{tikzcd}[row sep = 4.2em, column sep = 4.6em]
+    & X \arrow[ld, "x_1"'] \arrow[d, dashrightarrow, "{\langle x_1, x_2 \rangle}" description] \arrow[rd, "x_1"] \\
+    A & A \times B \arrow[l, "p_1"] \arrow[r, "p_2"'] & B
+  \end{tikzcd}
+\]
 
 \subsection{Non-examples of products}
 
@@ -515,9 +614,64 @@ functors. In other words we have exactly the ingredients for a functor.
 
 \section{Duality}
 
+\subsection{Isomorphism}
 
+Recal that an isomorphism is an arrow $f : A \to B$ with an inverse
+$f^{-1} : B \to A$. Pictorially it looks like this
+\[
+  \begin{tikzcd}
+    A \ar[r, bend left, "f"] & B \ar[l, bend left, "f^{-1}"]
+  \end{tikzcd}
+\]
+If we take the dual of the above by reversing both arrows we end up with
+\[
+  \begin{tikzcd}
+    A \ar[r, bend right, "f^{-1}"'] & B \ar[l, bend right, "f"']
+  \end{tikzcd}
+\]
+Which is still two inverse arrows going back and forth between $A$ and $B$. This
+leads to the slogan: ``The dual of isomorphism is isomorhpism''.
+
+\section{Equalizers}
+
+\begin{definition}
+  Given two arrows $f, g : A \to B$. For an element $E$ an arrow $e : E \to A$ is an
+  equalizer if
+  $$
+    f \circ e = g \circ e 
+  $$
+  and if for any $z : Z \to A$ there exists a unique $u$ such that $e \circ u = z$.
+  \[
+    \begin{tikzcd}
+      E \ar[r, "e"] & A \ar[r, shift left, "f"] \ar[r, shift right, "g"'] & B \\
+      Z \ar[u, dashrightarrow, "u"] \ar[ur, "z"]
+    \end{tikzcd}
+  \]
+\end{definition}
+
+And equalizer $e$ is like a proccess that we can apply to things before we put
+them into $f$ and $g$. If we apply this process before $f$ and $g$ these two
+processes do the exact same thing. So $e$ somehow removes all the input for
+which $f$ and $g$ produces different results. As such it makes sense that $e$ is
+called an equalizer since it equalizes $f$ and $g$.
+
+\section{Coequalizers}
+
+\[
+  \begin{tikzcd}
+    A \ar[r, shift left, "f"] \ar[r, shift right, "g"'] & B \ar[r, "q"] \ar[rd, "z"] & Q \ar[d, dashrightarrow, "u"] \\
+    & & Z
+  \end{tikzcd}
+\]
+
+Note that the diagram above is equivalent to the dual diagram for equalizers
+except it has also been flipped.
 
 \chapter{Exercises}
+
+\section{1}
+
+\subsection{11}
 
 \section{2}
 
@@ -622,9 +776,42 @@ $\mathbf{C}$.
 
 \section{3}
 
-\subsection{1
+\subsection{1}
+
+In any category $\mathbf{C}$ the below
+\[
+  \begin{tikzcd}
+    A \ar[r, "c_1"] & C & B \ar[l, "c_2"]
+  \end{tikzcd}
+\]
+is a coproduct in $\mathbf{C}$ if and only
+\[
+  \begin{tikzcd}
+    A & C \ar[l, "c_1"] \ar[r, "c_2"] & B
+  \end{tikzcd}
+\]
+is a product in $\mathbf{C}^{op}$. We know that this is a product if and only if
+the function
+\begin{align*}
+  \Hom(Z, C) & \to \Hom(Z, A) \times \Hom(Z, B) \\
+  f & \mapsto ( c_1 \circ f, c_2 \circ f )
+\end{align*}
+is an isomorphism. The dual of this function is
+\begin{align*}
+  \Hom(C, Z) & \to \Hom(A, Z) \times \Hom(B, Z) \\
+  f & \mapsto (f \circ c_1, f \circ c_2 \rangle
+\end{align*}
+And since duality preserves isomorphisms we have a coproduct if an only if the
+map is an isomorphism.
 
 \subsection{2}
+
+\[
+  \begin{tikzcd}
+    "|M(A)|" \ar[r, "|f|"] & "|N|" \\
+    A \ar[]
+  \end{tikzcd}
+\]
 
 \subsection{3}
 
@@ -635,6 +822,8 @@ $\mathbf{C}$.
 \subsection{10}
 
 \subsection{11}
+
+
 
 \subsection{12}
 
