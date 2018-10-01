@@ -611,7 +611,7 @@ details.
   In a category with binary products the binary product operation $A \times B$
   is associative up to isomorphism.
   \[
-    (A \times B) \times C \cong a \times (B \times C)
+    (A \times B) \times C \cong A \times (B \times C)
   \]
 \end{lemma}
 \begin{proof}
@@ -749,10 +749,13 @@ $f$ and $g$ can be though of as functions where $f(a) = g(b)$.
 
 \section{Limits}
 
+
+
+
 \subsection{Diagram}
 
 Consider a functor $D : \textbf{J} \to \textbf{C}$. The functor maps object and
-arrows in \textbf{C} to objects and arrows in \textbf{C}. In other words, for
+arrows in \textbf{D} to objects and arrows in \textbf{C}. In other words, for
 every object $j$ in \textbf{J} the functor $D$ maps $j$ to an object in
 \textbf{C}. Instead of thinking of this as a map we can also think of the object
 in \textbf{J} as indexing the object in \textbf{C}. With this point of view we
@@ -762,7 +765,18 @@ arrows in \textbf{J}. When we adopt this point of view we call $D$ a
 \emph{diagram} of type \textbf{J} in \textbf{C}. Formally a diagram is the same
 thing as a functor. But the change in name reflects the change of perspective.
 
-\subsection{Cone}
+\subsection{Cone} A \emph{cone} to a diagram $D$ is an object $C$ and a family
+of arrows in \textbf{C} where the arrows $c_i$, $c_j$ ... $c_k$ are from $C$ to
+each object in the diagram $D$. Making a cone shape with the object $C$ as the
+top where everything commutes. An example could be
+\[
+\begin{tikzcd}
+                          & C \arrow[dl, "c_i"'] \arrow[d, "c_j"] \arrow[dr, "c_k"]  \\
+  D_i \arrow[r, "D_\alpha"] & D_j \arrow[r, "D_\beta"]  & D_k
+\end{tikzcd}
+\]
+here $\alpha : i \to j$ and $\beta : j \to k$ are arrows in \textbf{J}.
+
 
 \chapter{Exercises}
 

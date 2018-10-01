@@ -3,3 +3,7 @@ notes.pdf
 *.out
 *.log
 auto/
+*.toc
+*.fls
+*.fdb_latexmk
+*.gz
