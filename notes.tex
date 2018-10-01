@@ -771,11 +771,33 @@ each object in the diagram $D$. Making a cone shape with the object $C$ as the
 top where everything commutes. An example could be
 \[
 \begin{tikzcd}
-                          & C \arrow[dl, "c_i"'] \arrow[d, "c_j"] \arrow[dr, "c_k"]  \\
-  D_i \arrow[r, "D_\alpha"] & D_j \arrow[r, "D_\beta"]  & D_k
+  & C \arrow[dl, "c_i"'] \arrow[d, "c_j"] \arrow[dr, "c_k"]  \\
+  D_i \arrow[r,"D_\alpha"] & D_j \arrow[r, "D_\beta"]  & D_k
 \end{tikzcd}
 \]
-here $\alpha : i \to j$ and $\beta : j \to k$ are arrows in \textbf{J}.
+here $\alpha : i \to j$ and $\beta : j \to k$ are arrows in \textbf{J}. A cone
+is sometimes
+written as a pair $(C, c_j)$ where $C$ is the "top" and $c_j$ is the family of
+morphisms from $C$ to the objects in diagram $D$.
+
+\subsection{Morphism of Cones}
+A morphism $\vartheta : (C, c_j) \to (C', c'_j)$ between cones
+\[
+\begin{tikzcd}
+  & C \arrow[dl, "c_i"'] \arrow[d, "c_j"] \arrow[dr, "c_k"] \arrow[dd, "\vartheta", bend right] \\
+  D_i \arrow[r,"D_\alpha"] & D_j \arrow[r, "D_\beta"]  & D_k \\
+  & C' \arrow[ul, "c'_i"'] \arrow[u, "c'_j"'] \arrow[ur, "c'_k"]
+\end{tikzcd}
+\]
+where $c_i = c'_i \circ \vartheta$ for all $i \in \textbf{J}$.
+
+Now we have the category of cones \textbf{Cones}.
+
+\subsection{Limits}
+
+\begin{definition}[Limit]
+\end{definition}
+
 
 
 \chapter{Exercises}
