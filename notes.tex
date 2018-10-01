@@ -6,6 +6,7 @@
 \usepackage{tikz-cd}
 \usepackage{amsthm}
 \usepackage{csquotes}
+\usepackage{braket}
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
@@ -15,7 +16,6 @@
 \tikzcdset{row sep/normal=3.0em}
 \tikzcdset{column sep/normal=3.6em}
 
-% Helpful command for typing arrows
 \newcommand{\arr}[3]{#1 : #2 \rightarrow #3}
 \newcommand\id{\mathit{id}}
 \newcommand\Hom{\text{Hom}}
@@ -35,7 +35,7 @@
 \section{What is category theory}
 
 ``As a first approximation category theory is the abstract algebra of
-functions.'' - Steve Awodey
+functions.'' --- Steve Awodey
 
 \subsection{Definition of a category}
 
@@ -47,10 +47,10 @@ A category $\mathbf{C}$ consists of
 \end{itemize}
 
 A category must satisfy the following laws. For each composable pair of arrows
-$\arr{f}{A}{B}$ and $\arr{g}{B}{C}$.
+$f : A \to B$ and $g : B \to C$.
 \begin{itemize}
   \item Unit
-  \item Associativity
+  \item Associativity.
     The following diagram commutes.
     \[
       \begin{tikzcd}
@@ -112,11 +112,11 @@ There can also be none at all.
 In category theory equations can be expressed using commutative diagrams. When
 we draw a diagram like the following.
 \[
-\begin{tikzcd}
-  A \arrow[r, "f"] \arrow[d, "h"']
-  & B \arrow[d, "g"] \\
-  C \arrow[r, "p"] & D
-\end{tikzcd}
+  \begin{tikzcd}
+    A \arrow[r, "f"] \arrow[d, "h"']
+    & B \arrow[d, "g"] \\
+    C \arrow[r, "p"] & D
+  \end{tikzcd}
 \]
 It is supposed to communicate that $f \circ g = h \circ p$. In such cases we
 say the ``the diagram commutes'' to denote the properties that the diagram
@@ -148,6 +148,20 @@ $C$.
 One way that one should \emph{note} think about $C^{opposite}$ is as something
 that reverses each arrow.
 
+\subsection{Slice category}
+
+A slice category $\mathbf{C}/X$ has as objects all arrows in \textbf{C} with $X$
+as their codomain.
+
+Arrows in $\mathbf{C}/X$.
+
+\[
+  \begin{tikzcd}
+    A \ar[rr, "f"] \ar[dr, "g"] & & B \ar[dl, "h"] \\
+    & X
+  \end{tikzcd}
+\]
+
 \section{Universal Mapping Properties}
 
 A universal mapping property is used to define things in a categorical way.
@@ -161,21 +175,20 @@ exactly one something.
 \section{Functor}
 
 \begin{definition}[Functor]
-  A functor $\arr{F}{\mathbf{C}}{\mathbf{D}}$ is a map between categories. It
+  A functor $F \to \mathbf{C} \to \mathbf{D}$ is a map between categories. It
   consists of two parts:
   \begin{itemize}
   \item A mapping between objects:
-    $\arr{F_{obj}}{obj(\mathbf{C})}{(obj\mathbf{D})}$.
+    $F_{obj} : obj(\mathbf{C}) \to (obj\mathbf{D})$.
   \item A mapping between arrows:
-    $\arr{F_{arr}}{arr(\mathbf{C})}{(arr\mathbf{D})}$.
+    $F_{arr} : arr(\mathbf{C}) \to (arr\mathbf{D})$.
   \end{itemize}
   However, we usually just write $F$ and treat it as an overloaded function that
   can be applied to both arrows and objects. A functor must satisfy three laws:
   \begin{itemize}
-  \item Preserves domain and codomain. $F(\arr{f}{A}{B}) =
-    \arr{F(f)}{F(A)}{F(B)}$
-    \item Preserve identities. $F(\id_A) = \id_{F(A)}$
-    \item Preserve composition: $F(g \circ f) = F(g) \circ F(f)$
+  \item Preserves domain and codomain. $F(f : A \to B) = F(f) : F(A) \to F(B)$
+  \item Preserve identities. $F(\id_A) = \id_{F(A)}$
+  \item Preserve composition: $F(g \circ f) = F(g) \circ F(f)$
   \end{itemize}
 \end{definition}
 
@@ -193,10 +206,12 @@ Examples.
 \end{itemize}
 
 \begin{proposition}
-  If $\arr{f}{A}{B}$ and $\arr{g}{B}{C}$ are isomorphisms then their composition
+  If $f : f \to B$ and $g : B \to C$ are isomorphisms then their composition
   $f \circ g$ is also an isomorphism and the inverse is
-  \[ (f \circ g)^{-1} = g^{-1} \circ f^{-1} \]
-  This means that isomorphisms compose into isomorphisms
+  \[
+    (f \circ g)^{-1} = g^{-1} \circ f^{-1}
+  \]
+  This means that isomorphisms compose into isomorphisms.
 \end{proposition}
 \begin{proof}
   First we show that $g^{-1} \circ f^{-1}$ is a right inverse.
@@ -213,8 +228,8 @@ Examples.
 \subsection{Monomorphism}
 
 \begin{definition}{Monomorphism}
-  In a category $\bf{C}$, an arrow $\arr{f}{A}{B}$ is a \emph{monomorphism} if
-  for any $g, h : C \rightarrow A$ it is the case that $fg = fh \implies g = h$.
+  In a category $\bf{C}$, an arrow $f : A \to B$ is a \emph{monomorphism} if for
+  any $g, h : C \rightarrow A$ it is the case that $fg = fh \implies g = h$.
   \[
   \begin{tikzcd}
     C \ar[r, shift left, "g"] \ar[r, shift right, "h"'] & A \arrow[r, "f"] & B
@@ -228,8 +243,8 @@ Mnemonic: A monomorphism is the categorical equivalent to an \emph{injective}
 function, that is a one-to-one function, and \emph{mono} means \emph{one}.
 
 \begin{proposition}
-  A function $\arr{f}{A}{B}$ between sets is monic in $\bf{Sets}$ if and only if
-  it is injective.
+  A function $f : A \to B$ between sets is monic in $\bf{Sets}$ if and only if it
+  is injective.
 \end{proposition}
 \begin{proof}
   ($\Rightarrow$) Assume $f$ is a monomorphism in $\bf{Sets}$. We must show that
@@ -241,8 +256,8 @@ function, that is a one-to-one function, and \emph{mono} means \emph{one}.
 \end{proof}
 
 \begin{definition}{Epimorphism}
-  In a category $\bf{C}$, an arrow $\arr{f}{A}{B}$ is an \emph{epimorphism} if
-  for any $\arr{i, j}{B}{D}$ it is the case that $if = jf \implies i = j$.
+  In a category $\bf{C}$, an arrow $f : A \to B$ is an \emph{epimorphism} if for
+  any $i, j : B \to D$ it is the case that $if = jf \implies i = j$.
 
   \begin{tikzcd}
     A \ar[r, "f"] & B \ar[r, shift left, "i"] \ar[r, shift right, "j"'] & D
@@ -258,21 +273,21 @@ never reached by $f$ then the functions $i$ and $j$ could differ for those
 elements such that $if = jf$ without $i = j$ being true.
 
 \begin{proposition}
-  A function $\arr{f}{A}{B}$ between sets is an epimorphism in $\bf{Sets}$ if
-  and only if it is surjective.
+  A function $f : A \to B$ between sets is an epimorphism in $\bf{Sets}$ if and
+  only if it is surjective.
 \end{proposition}
 \begin{proof}
-  ($\Rightarrow$) Assume $f$ is an epimorphism. We must show that $f$ is a
-  surjective function. Let $b$ be an element in $B$. Let $d, d' \in D$ where $d
-  \neq d'$ and define $\arr{i}{B}{D}$ as the function that maps every element
-  in $B$ to $d$ except for $b$ which it maps to $d'$.
+  ($\Rightarrow$) Assume $f$ is an epimorphism. We must show that $f$ is a surjective
+  function. Let $b$ be an element in $B$. Let $d, d' \in D$ where $d \neq d'$ and
+  define $i : B \to D$ as the function that maps every element in $B$ to $d$
+  except for $b$ which it maps to $d'$.
   \[
     i(x) = \begin{cases}
       d' & x = b \\
       d & \text{otherwise}
     \end{cases}
   \]
-  Let $\arr{j}{B}{D}$ be a constant function that sends every element to $d$.
+  Let $j : B \to D$ be a constant function that sends every element to $d$.
   \[
     j(x) = d
   \]
@@ -281,11 +296,10 @@ elements such that $if = jf$ without $i = j$ being true.
   $b$. Hence $f(a) = b$. Since $b$ was arbitrary this shows that $f$ is
   surjective.
 
-  ($\Leftarrow$) Assume that $f$ is a surjective function. We must show that $f$
-  is an epimorphism. Let $\arr{i, j}{B}{D}$ be arbitrary functions where $i \neq
-  j$. Then there exists some $b \in B$ where $i(b) \neq j(b)$. Since $f$ is
-  surjective there must exist an $a \in A$ where $b = f(a)$. Putting this
-  together we have:
+  ($\Leftarrow$) Assume that $f$ is a surjective function. We must show that $f$ is an
+  epimorphism. Let $i, j : B \to D$ be arbitrary functions where $i \neq j$. Then
+  there exists some $b \in B$ where $i(b) \neq j(b)$. Since $f$ is surjective there
+  must exist an $a \in A$ where $b = f(a)$. Putting this together we have:
 
   \begin{align*}
     i(b) &\neq j(b) && \text{since $i \neq j$} \\
@@ -299,9 +313,9 @@ elements such that $if = jf$ without $i = j$ being true.
   In a poset category all arrows are both monic and epic.
 \end{proposition}
 \begin{proof}
-  Let $\arr{f}{A}{B}$ be an arrow in a poset category. Per the definition of a
+  Let $f : A \to B$ be an arrow in a poset category. Per the definition of a
   poset category there is always only a single arrow between two objects.
-  Therefore if we have $\arr{g, h}{C}{A}$ such that $fg = fh$ we can conclude
+  Therefore if we have $g, h : C \to A$ such that $fg = fh$ we can conclude
   that $g = h$ since they are both arrows between $C$ and $A$. Therefore $f$ is
   monic. Similarly, if $\arr{i, j}{B}{D}$ such that $if = jf$ then $i = j$ and
   $f$ is a epic.
@@ -332,8 +346,35 @@ elements such that $if = jf$ without $i = j$ being true.
   epimorphism.
 \end{proof}
 
+Consider a situration where we have arrows $s : A \to B$ and $r : B \to A$ such
+that the following diagram commutes.
+\[
+  \begin{tikzcd}
+  A \ar[r, "s"] \ar[dr, "\id_A"'] & B \ar[d, "r"] \\
+                                  & A
+  \end{tikzcd}
+\]
+We have $rs = \id_{A}$ (but not necessarily $sr = \id_{B}$). We call $r$ both a
+\emph{left-inverse} for $s$ and a \emph{retraction of $s$}. A morphism that is a
+retraction of some morphism is called a \emph{retraction}. Symmetrically $s$ is
+called both a \emph{right-inverse} of $r$ and a \emph{section} of $r$. A
+morphism that is a section of some morphism is called a \emph{section}.
+
+\begin{proposition}
+  Every \emph{retraction} is epic and every \emph{section} is monic.
+\end{proposition}
+\begin{proof}
+  Assume $r$ is a retraction. Then $r$ has a left inverse $s$. Then
+  \[
+    fr = gr \implies frs = grs \implies f = g
+  \]
+  Thus $r$ is epic.
+
+  The argument for sections is similar.
+\end{proof}
+
 \begin{definition}[Split mono and split epic]
-  An arrow $\arr{f}{A}{B}$ is a \emph{split mono} if it has a \emph{left}
+  An arrow $f : A \to B$ is a \emph{split mono} if it has a \emph{left}
   inverse. That is, an arrow $\arr{g}{C}{A}$ such that
   \[ gf = \id_A \]
 
@@ -394,7 +435,7 @@ When a mono is a split mono we say that the \emph{mono splits}.
 
 \begin{definition}[Terminal]
   An object $1$ is \emph{terminal} if for any object $C$ there is a unique
-  morphism $\arr{F}{C}{1}$.
+  morphism $F : C \to 1$.
   \[
     \begin{tikzcd}
       C \arrow[r, dashrightarrow, "f"] & 1
@@ -478,8 +519,8 @@ precise.
       A & P \arrow[l, "p_1"'] \arrow[r, "p_2"] & B
     \end{tikzcd}
   \]
-  The above must satisfy the universal mapping property that $\forall x, f_1,
-  f_2 \exists! u$ such that the following diagram commutes.
+  The above must satisfy the universal mapping property that
+  $\forall x, f_1, f_2 \exists! u$ such that the following diagram commutes.
   \[
     \begin{tikzcd}
       & X \arrow[ld, "x_1"'] \arrow[d, dashrightarrow, "u"] \arrow[rd, "x_1"] \\
@@ -581,11 +622,10 @@ details.
 
 \begin{definition}
   Given a locally small category $\bf{C}$ and objects $A$ and $B$ the set
-  $\Hom(A, B)$ is all the homomorphisms from $A$ to $B$.
-
+  $\Hom(A, B)$ is all the arrows from $A$ to $B$.
   \begin{align*}
     \Hom_{\mathbf{C}}(A, B) &= \text{ all arrows from } A \text{ to } B \\
-                          &= \{ f \in \mathbf{C} \mid f : A \rightarrow B \}
+                          &= \set{ f \in \mathbf{C} \mid f : A \rightarrow B }
   \end{align*}
 \end{definition}
 
@@ -594,21 +634,19 @@ element in $\mathbf{Sets}$ this function gives us a way to turn any pair of
 objects in any (locally small) category into an \emph{object in
   $\mathbf{Sets}$}.
 
-Based on this we can define a function.
-\begin{align*}
-  \Hom(A, g) : \Hom(A, B) \to \Hom(A, B') \\
-  (f : A \to B) \mapsto (g \circ f : A \to B \to B')
-\end{align*}
+Additionally, this we can define a function.
+\begin{gather*}
+  \Hom_{\mathbf{C}}(A, g) : \Hom(A, B) \to \Hom(A, B') \\
+  f \mapsto g \circ f
+\end{gather*}
 
 Note that the notation is overloaded! $\Hom(A, B)$ is the set of all arrows from
 $A$ to $B$. But $\Hom(A, g)$ is a function from arrows from $A$ to $B$
 ($\Hom(A, B)$) to arrows from $A$ to $B'$ ($\Hom(A, B')$).
-
 \begin{itemize}
-\item For an \emph{object} $B$: $\Hom(A, B)$ is an \emph{object} in $\mathbf{Sets}$.
-\item For an \emph{arrow} $g$: $\Hom(A, g)$ is an \emph{arrow} in $\mathbf{Sets}$.
+\item For an \emph{object} $B$ $\Hom(A, B)$ is an \emph{object} in $\mathbf{Sets}$.
+\item For an \emph{arrow} $g$ $\Hom(A, g)$ is an \emph{arrow} in $\mathbf{Sets}$.
 \end{itemize}
-
 Note that the overloading above is the exact same overloading that we use with
 functors. In other words we have exactly the ingredients for a functor.
 
@@ -630,16 +668,16 @@ If we take the dual of the above by reversing both arrows we end up with
   \end{tikzcd}
 \]
 Which is still two inverse arrows going back and forth between $A$ and $B$. This
-leads to the slogan: ``The dual of isomorphism is isomorhpism''.
+leads to the slogan: ``The dual of isomorphism is isomorphism''.
 
 \section{Equalizers}
 
 \begin{definition}
   Given two arrows $f, g : A \to B$. For an element $E$ an arrow $e : E \to A$ is an
   equalizer if
-  $$
-    f \circ e = g \circ e 
-  $$
+  \[
+    f \circ e = g \circ e
+  \]
   and if for any $z : Z \to A$ there exists a unique $u$ such that $e \circ u = z$.
   \[
     \begin{tikzcd}
@@ -655,6 +693,24 @@ processes do the exact same thing. So $e$ somehow removes all the input for
 which $f$ and $g$ produces different results. As such it makes sense that $e$ is
 called an equalizer since it equalizes $f$ and $g$.
 
+The universal mapping property ensures that $e$ does \emph{as little as
+  possible} to make $f$ and $g$ equal.
+% To see why this is necessary consider two function $f, g : A \to B$ in
+% \textbf{Sets}. For any element $a \in A$ the constant function that maps
+% everything to $a$ would satisfy the criteria. FIXME.
+
+\begin{proposition}
+  Equalizers are always monomorphisms.
+\end{proposition}
+\begin{proof}
+  Let $e$ be an equalizer. % FIXME.
+\end{proof}
+
+\begin{remark}
+  A category \textbf{C} \emph{has equalizers} if for any two arrows
+  $f, g : A \to B$ there exists an equalizer for the arrows.
+\end{remark}
+
 \section{Coequalizers}
 
 \[
@@ -666,6 +722,47 @@ called an equalizer since it equalizes $f$ and $g$.
 
 Note that the diagram above is equivalent to the dual diagram for equalizers
 except it has also been flipped.
+
+\section{Subobjects}
+
+\begin{definition}[Subobject]
+  If $X$ is an object in a category \textbf{C} then a \emph{subobject} of $X$ is
+  a monomorphism $m : M \to X$.
+\end{definition}
+
+There is not anything new in this definition. A subobject and a monomorphism is
+exactly the same thing. It is nothing but a different perspective, a new way of
+looking at, the definition of a monomorphism.
+
+Note that, perhaps confusingly, a subobject of $X$ is \emph{not} an object in
+the same category as $X$.
+
+$\text{Sub}_{\mathbf{C}}(X)$ denotes the subobjects of $X$ in \textbf{C}.
+
+\section{Pullbacks}
+
+Pullbacks is a generalization of both intersection and inverse
+image. % FIXME: Why is this the case?
+
+A pullback $A \times_{C} B$ can be though of as a pair of elements $(a, b)$ and
+$f$ and $g$ can be though of as functions where $f(a) = g(b)$.
+
+\section{Limits}
+
+\subsection{Diagram}
+
+Consider a functor $D : \textbf{J} \to \textbf{C}$. The functor maps object and
+arrows in \textbf{C} to objects and arrows in \textbf{C}. In other words, for
+every object $j$ in \textbf{J} the functor $D$ maps $j$ to an object in
+\textbf{C}. Instead of thinking of this as a map we can also think of the object
+in \textbf{J} as indexing the object in \textbf{C}. With this point of view we
+may write $D_{j}$ to denote $D(j)$. Instead of thinking of $D$ as a functor we
+can think of it as being objects and arrows in \textbf{C} indexed by objects and
+arrows in \textbf{J}. When we adopt this point of view we call $D$ a
+\emph{diagram} of type \textbf{J} in \textbf{C}. Formally a diagram is the same
+thing as a functor. But the change in name reflects the change of perspective.
+
+\subsection{Cone}
 
 \chapter{Exercises}
 
@@ -704,7 +801,7 @@ In other words the situration where $h = gf$.
       a &= a' && \text{because $g$ is an epi} \\
     \end{align*}
     Therefore $g$ is an epi.
-  \item if $h$ is monic then so is $f$. Assume $h$ is monic.
+b  \item if $h$ is monic then so is $f$. Assume $h$ is monic.
     \[
       f x = f x' \implies g f x = g f x' \implies h x = h x' \implies x = x'
     \]
@@ -823,12 +920,23 @@ map is an isomorphism.
 
 \subsection{11}
 
-
-
 \subsection{12}
 
 \subsection{13}
 
 \subsection{14}
 
+\section{5}
+
+\section{1}
+\section{2}
+\section{3}
+\section{4}
+\section{6}
+
 \end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
