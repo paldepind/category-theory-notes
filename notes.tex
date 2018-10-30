@@ -13,12 +13,14 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}{Proposition}
 \newtheorem{lemma}{Lemma}
+\newtheorem*{remark}{Remark}
 \tikzcdset{row sep/normal=3.0em}
 \tikzcdset{column sep/normal=3.6em}
 
 \newcommand{\arr}[3]{#1 : #2 \rightarrow #3}
 \newcommand\id{\mathit{id}}
 \newcommand\Hom{\text{Hom}}
+\newcommand\Fun{\text{Fun}}
 
 \title{Category Theory Notes}
 \author{}
@@ -454,6 +456,12 @@ When a mono is a split mono we say that the \emph{mono splits}.
 
 Terminal objects are also sometimes called \emph{final}.
 
+\subsection{Examples of initial and terminal object}
+
+In \emph{Sets} is the empty set inital and the all singleton sets are
+terminal. Thus in \textbf{Sets} there are only one initial but infinitely many
+terminal objects.
+
 \subsection{Poset}
 
 In a poset an initial object is one that is smaller than or equal to any other
@@ -747,10 +755,31 @@ image. % FIXME: Why is this the case?
 A pullback $A \times_{C} B$ can be though of as a pair of elements $(a, b)$ and
 $f$ and $g$ can be though of as functions where $f(a) = g(b)$.
 
+\[
+  \begin{tikzcd}
+    Z \ar[dr, dashed, "u"] \ar[drr, "z_{2}"] \ar[ddr, "z_{1}"'] & & \\
+    & P \ar[r, "p_{2}"] \ar[d, "p_{1}"] & B \ar[d, "g"] \\
+    & A \ar[r, "f"] & C
+  \end{tikzcd}
+\]
+
+\section{Coproduct}
+
+\subsection{Coproduct in \textbf{Cat}}
+
+If \textbf{C} and \textbf{D} are a categories then $\mathbf{C} + \mathbf{D}$
+forms a category as follows:
+
+\begin{itemize}
+\item The object in $\mathbf{C} + \mathbf{D}$ is the disjoint union of the
+  objects in $\mathbf{C}$ with the objects in $\mathbf{D}$. That is
+  \[
+    Obj(\mathbf{C} + \mathbf{D}) = Obj(\mathbf{C}) + Obj(\mathbf{D})
+  \]
+\item An arrow in $\mathbf{C} + \mathbf{D}$ is 
+\end{itemize}
+
 \section{Limits}
-
-
-
 
 \subsection{Diagram}
 
@@ -765,22 +794,24 @@ arrows in \textbf{J}. When we adopt this point of view we call $D$ a
 \emph{diagram} of type \textbf{J} in \textbf{C}. Formally a diagram is the same
 thing as a functor. But the change in name reflects the change of perspective.
 
-\subsection{Cone} A \emph{cone} to a diagram $D$ is an object $C$ and a family
-of arrows in \textbf{C} where the arrows $c_i$, $c_j$ ... $c_k$ are from $C$ to
-each object in the diagram $D$. Making a cone shape with the object $C$ as the
-top where everything commutes. An example could be
+\subsection{Cone}
+
+A \emph{cone} to a diagram $D$ is an object $C$ and a family of arrows in
+\textbf{C} where the arrows $c_i$, $c_j$ \dots, $c_k$ are from $C$ to each
+object in the diagram $D$. Making a cone shape with the object $C$ as the top
+where everything commutes. An example could be
 \[
 \begin{tikzcd}
   & C \arrow[dl, "c_i"'] \arrow[d, "c_j"] \arrow[dr, "c_k"]  \\
   D_i \arrow[r,"D_\alpha"] & D_j \arrow[r, "D_\beta"]  & D_k
 \end{tikzcd}
 \]
-here $\alpha : i \to j$ and $\beta : j \to k$ are arrows in \textbf{J}. A cone
-is sometimes
+Here $\alpha : i \to j$ and $\beta : j \to k$ are arrows in \textbf{J}. A cone is sometimes
 written as a pair $(C, c_j)$ where $C$ is the "top" and $c_j$ is the family of
 morphisms from $C$ to the objects in diagram $D$.
 
 \subsection{Morphism of Cones}
+
 A morphism $\vartheta : (C, c_j) \to (C', c'_j)$ between cones
 \[
 \begin{tikzcd}
@@ -798,7 +829,108 @@ Now we have the category of cones \textbf{Cones}.
 \begin{definition}[Limit]
 \end{definition}
 
+\section{Exponentials}
 
+Recall that in set theory a \emph{function space} is a set of function between
+two sets. A function space consisting of functions from the domain $A$ to the
+codomain $B$ may be denoted as $B^{A}$. In category theory \emph{exponentials}
+generalize this notion of function spaces. We want to write $B^{A}$ where $A$
+and $B$ are two objects in a category and we want for the meaning to capture the
+properties that a function space has in set theory.
+
+\[
+  \tilde{f} : A \to C^{B}
+\]
+The arrow $\tilde{f}$ is like a curried version of $f$. It is called the
+exponential transpose of $f$.
+
+\section{Naturality}
+
+The difference between faithfulnes and injective on arrows is that in the former
+case we fix two arrows $A$ and $B$ and only in this case consider if the functor
+is surjective on arrows.
+
+\subsection{Codiagonal functor}
+
+The codiagonal functor $\nabla : \mathbf{C} + \mathbf{C} \to \mathbf{C}$ is the unique
+functor that satisfies the diagram
+\[
+  \begin{tikzcd}
+    C \ar[r, "i_{1}"] \ar[dr, "\id_{C}"'] & C + C \ar[d, "\nabla"] & C \ar[l, "i_{2}"'] \ar[dl, "\id_{C}"] \\
+    & C
+  \end{tikzcd}
+\]
+In other words the $\nabla$ functor simply extracts the value from the sum and throws
+away the tag.
+
+The codiagonal functor is faithful but not injective on arrows.
+
+It being faithful means that for all $A, B \in \mathbf{C} + \mathbf{C}$ the function
+\[
+  \nabla_{A,B} : \Hom_{\mathbf{C}+\mathbf{C}}(A, B) \to \Hom_{\mathbf{C}}(\nabla A, \nabla B)
+\]
+$f \mapsto \Delta(f)$ is injective. This is the case. Given two arrows with the same domain
+and codomain $\nabla$ maps them to different arrows if they are different.
+
+It not being injective on arrows means that there exists arrows $f$ and $g$
+where $f \neq g$ but where $\nabla(f) = \nabla(g)$. Indeed, if $k$ is an arrow in
+$\mathbf{C}$ then $i_{1}(k)$ and $i_{2}(k)$ are two different arrows in
+$\mathbf{C} \times \mathbf{C}$ but $\nabla (i_{1}(k)) = \nabla (i_{2}(k))$. But, note that
+$f$ and $g$ have different domains a codomains, this is why this does not affect
+the faithfulness of the functor.
+
+\subsection{Natural transformation}
+
+\begin{definition}[Natural transformation]
+  Given two categories \textbf{C} and \textbf{D} and two functors between them
+  $F, G : \mathbf{C} \to \mathbf{D}$ a \textbf{natural transformation} from $F$ to
+  $G$, denoted $\vartheta : \mathbf{C} \to \mathbf{D}$, is a collection of a arrows
+  in \textbf{D}.
+
+  For each object $C \in \mathbf{C}$ there is an arrow
+  $\vartheta_{C} : F(C) \to G(C)$. Each such arrow must, for any $f : C \to C'$,
+  satisfy the following
+  \[
+    \begin{tikzcd}
+      F(C) \ar[d, "F(f)"]\ar[r, "\vartheta_{C}"] & G(C) \ar[d, "G(f)"] \\
+      F(C') \ar[r, "\vartheta_{C'}"] & G(C')
+    \end{tikzcd}
+  \]
+  That is $\vartheta_{C'} \circ F(f) = G(f) \circ \vartheta_{C}$.
+
+  In words, we have two objects in \textbf{C}: $C$ and $C'$, and a way to go
+  from the first to the later: $f : C \to C'$. If we apply the functor $F$ to
+  $f$, followg that arrow to $F(C')$ and then follow the arrow $\vartheta_{C'}$
+  from the natural transformation then that is the same as first following the
+  arrow $\vartheta_{C}$ from the natural transformation and then following the
+  arrow $G(f)$.
+
+  In other words, the two functors $F$ and $G$ gives us two ways to move from
+  the category \textbf{C} to the category \textbf{D}. A natural transformation
+  is a form of relationship between these two different translations. This
+  relationship consists of arrows between the object in \textbf{D}. This makes
+  sense because for each object $C$ in $\mathbf{C}$ both $F(C)$ and $G(C)$
+  offers a translation of this object to an object in $\mathbf{D}$ offers a
+  translation of this object to an object in $\mathbf{D}$. Relating the
+  functors, or translations, then consists of a way of relating each
+  ``translation result'' with an arrow. The diagram above is then a way of
+  saying that these relationships should ``still agree'' after following an
+  arrow in \textbf{C} from $C$ to some other object $C'$ in \textbf{C}.
+\end{definition}
+
+\subsection{The functor category}
+
+Natural transformations gives us arrows between functors. This indicates that we
+can create a category of functors.
+
+\begin{definition}[Natural isomorphism]
+  A natural transformation $\vartheta : F \to G$ is a \emph{natural isomorphism}
+  if it is an isomorphism in the corresponding functor category, namely
+  $\Fun(\mathbf{C}, \mathbf{D})$.
+\end{definition}
+
+What does it take for a natural transformation $\vartheta : F \to G$ to be an
+isomorphism?
 
 \chapter{Exercises}
 
