@@ -176,6 +176,9 @@ exactly one something.
 
 \section{Functor}
 
+A functor is a mapping that is used to transfer commutative diagrams between
+categories.
+
 \begin{definition}[Functor]
   A functor $F \to \mathbf{C} \to \mathbf{D}$ is a map between categories. It
   consists of two parts:
@@ -657,6 +660,16 @@ $A$ to $B$. But $\Hom(A, g)$ is a function from arrows from $A$ to $B$
 \end{itemize}
 Note that the overloading above is the exact same overloading that we use with
 functors. In other words we have exactly the ingredients for a functor.
+
+\section{Contravariant functor}
+
+A functor $F$ sends an arrow $f : A \to B$ to an arrow $F(f) : F(A) \to F(B)$.
+However, in some cases a functor like contstruction arises that is a functor
+except that it it ``flips'' arrows and composition around. It reverses the
+domain and codomain of arrows such that $f$ is mapped to $F(f) : F(A) \to F(B)$.
+
+Such a contravariant functor from $C$ to $D$ is just a normal functor from
+$C^{op}$ to $D$.
 
 \section{Duality}
 
