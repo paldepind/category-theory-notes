@@ -32,7 +32,7 @@
 \tableofcontents
 \newpage
 
-\chapter{Category theory}
+\chapter{Categories}
 
 \section{What is category theory}
 
@@ -792,9 +792,9 @@ forms a category as follows:
 \item An arrow in $\mathbf{C} + \mathbf{D}$ is 
 \end{itemize}
 
-\section{Limits}
+\chapter{Limits and colimits}
 
-\subsection{Diagram}
+\section{Diagram}
 
 Consider a functor $D : \textbf{J} \to \textbf{C}$. The functor maps object and
 arrows in \textbf{D} to objects and arrows in \textbf{C}. In other words, for
@@ -807,7 +807,7 @@ arrows in \textbf{J}. When we adopt this point of view we call $D$ a
 \emph{diagram} of type \textbf{J} in \textbf{C}. Formally a diagram is the same
 thing as a functor. But the change in name reflects the change of perspective.
 
-\subsection{Cone}
+\section{Cone}
 
 A \emph{cone} to a diagram $D$ is an object $C$ and a family of arrows in
 \textbf{C} where the arrows $c_i$, $c_j$ \dots, $c_k$ are from $C$ to each
@@ -823,7 +823,7 @@ Here $\alpha : i \to j$ and $\beta : j \to k$ are arrows in \textbf{J}. A cone i
 written as a pair $(C, c_j)$ where $C$ is the "top" and $c_j$ is the family of
 morphisms from $C$ to the objects in diagram $D$.
 
-\subsection{Morphism of Cones}
+\section{Morphism of Cones}
 
 A morphism $\vartheta : (C, c_j) \to (C', c'_j)$ between cones
 \[
@@ -842,7 +842,7 @@ Now we have the category of cones \textbf{Cones}.
 \begin{definition}[Limit]
 \end{definition}
 
-\section{Exponentials}
+\chapter{Exponentials}
 
 Recall that in set theory a \emph{function space} is a set of function between
 two sets. A function space consisting of functions from the domain $A$ to the
@@ -857,7 +857,7 @@ properties that a function space has in set theory.
 The arrow $\tilde{f}$ is like a curried version of $f$. It is called the
 exponential transpose of $f$.
 
-\section{Naturality}
+\chapter{Naturality}
 
 The difference between faithfulnes and injective on arrows is that in the former
 case we fix two arrows $A$ and $B$ and only in this case consider if the functor
@@ -944,6 +944,12 @@ can create a category of functors.
 
 What does it take for a natural transformation $\vartheta : F \to G$ to be an
 isomorphism?
+
+\chapter{Categories of Diagrams}
+
+\chapter{Adjoints}
+
+\chapter{Hyperdoctrines}
 
 \chapter{Exercises}
 
