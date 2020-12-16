@@ -23,7 +23,7 @@
 \newcommand\Fun{\text{Fun}}
 
 \title{Category Theory Notes}
-\author{}
+\author{Simon Friis Vindum}
 
 \begin{document}
 
@@ -64,7 +64,66 @@ $f : A \to B$ and $g : B \to C$.
 In general there can be many, even infinitely many, arrows between two objects.
 There can also be none at all.
 
-\subsection{Examples of categories}
+\section{Arrows as relations}
+
+One intuition about arrows is that they represent \textit{relationships}.
+This is, an arrow $f : A \to B$ means that $A$ is somehow related to $B$.
+Furthermore, this relationship is directed \textit{from} $A$ \emph{to} $B$.
+Here are a few examples which illustrate this.
+
+\subsection{Poset}
+
+\begin{definition}[Poset]
+  A partially ordered set (poset) is a set $A$ along with an \emph{ordering} of the elements $\leq$ such that for all $a, b, c \in A$:
+  \begin{itemize}
+    \item $a \leq a$ (reflexivity).
+    \item If $a \leq b$ and $b \leq c$ then $a \leq c$ (transivity).
+  \end{itemize}
+\end{definition}
+
+A poset can be considered as a category.
+Its objects are all the elements of $A$ and there is an arrow from $a$ to $b$ iff $a \leq b$.
+In this case the relationship expressed by the arrows is just the relationship given by $\leq$.
+Note how the arrows in this case do not contain any data, they are merely ``tags''.
+
+
+For a category constructed in this way there is exactly zero or one arrow between any two objects.
+Conversely, any category where this is the case gives rise to a poset.
+Hence, we have the slogan ``a poset is just a category with at most one arrow between any two objects''.
+
+\subsection{Equivalence relation}
+
+An equivalence relation generalizes the notion of equality.
+
+\begin{definition}[Equivalence relation]
+  An equivalence relation for a set $A$ is a relation $\simeq$ such that for all $a, b, c \in A$:
+  \begin{itemize}
+    \item $a \simeq a$ (reflexivity).
+    \item If $a \simeq b$ then also $b \simeq a$ (symmetry).
+    \item If $a \simeq b$ and $b \simeq c$ then $a \simeq c$ (transivity).
+  \end{itemize}
+\end{definition}
+
+We can now form a category where every object is an element in $A$ and there is an arrow from $a$ to $b$ iff $a \simeq b$.
+Note how in this category every arrow has an inverse.
+
+% Given an equivalence relation we can construct the set $A \ \simeq$ which is formed by ``modding out'' the elements in $A$ by $\simeq$.
+% For a particular element $a \in A$ we can send it to the set of all the things which it are equivalent to according to $\simeq$
+% \[
+%   [a] = \{ b \in A \mid a \simeq b \}
+% \]
+% With this we can define the quotient set of $A$ over $\simeq$.
+% \[
+%   A \ \simeq = \{ [a] \mid a \in A \}
+% \]
+
+
+\subsection{Groupoids}
+
+A groupoid can be considered as an equivalence relation with data.
+FIXME: Write some more about this.
+
+\section{More examples of categories}
 
 \begin{itemize}
   \item \textbf{Sets}. The objects are sets and the arrows are functions.
@@ -174,6 +233,13 @@ Saying that there exists a \emph{unique} something is the same as saying that
 there exists a \emph{single} something which is the same as saying that there is
 exactly one something.
 
+A universal construction is some \textit{thing} (for instance an object) such
+that any other \textit{thing} of the same form/shape there is a unique
+relationship between the two.
+
+Among other things this means that since a \textit{things} is certainly of the
+same shape as itself it has this unique relationship with itself.
+
 \section{Functor}
 
 A functor is a mapping that is used to transfer commutative diagrams between
@@ -198,6 +264,23 @@ categories.
 \end{definition}
 
 \section{Isomorphisms}
+
+In category theory we rarely care about whether or not two objects are exactly the same.
+You might already be familiar with cases where we do not need things to be \emph{exactly} the same.
+
+As computer scientists we often say that the function $\lambda a. a + a$ is the same function as $\lambda b. b + b$.
+Even though these functions are not exactly the same, due to the different choice of names.
+This is because for all the things we care about these two functions are equivalent.
+We say that they are equivalent ``up to renaming'' (alpha-equivalence).
+
+Similarly the two sets $\{ a, b, c \}$ and $\{ one, two, three \}$ are equivalent ``up to renaming''.
+We can rename the elements in the first set and arrive at the second set.
+Clearly such a renaming exists whenever the two sets have the same number of elements.
+Hence, just as it is natural to say that $\lambda a. a + a$ is the same function as $\lambda b. b + b$.
+it is natural to say that these two sets are the same.
+
+In category theory, we make this notion precise as an \emph{isomorphism}.
+We say that two objects are isomorphic when they are ``equal except for irrelevant details that we do not care about''.
 
 \begin{definition}[Isomorphism]
   An isomorphism is an arrow with an inverse.
@@ -605,12 +688,22 @@ diagram below.
 \end{itemize}
 
 \begin{lemma}
-  Products are unique up to isomorphism. That is, if $A \times B$ and $A' \times
-  B'$ are products in a category $\bf{C}$ then.
+  Products are unique up to unique isomorphism. That is, if $A \times B$ and $A \times'
+  B$ are products in a category $\bf{C}$ then.
   $$
-  A \times B \cong A' \times B'
+  A \times B \cong A \times' B
   $$
 \end{lemma}
+One thing that is not spelled out in the lemma above is that we only want certain kinds of isomorphisms between products.
+We only want an isomorphism $f$ that makes the following diagram commute.
+\[
+\begin{tikzcd}
+  & A \times B \arrow[ld, "\pi_1"'] \arrow[rd, "\pi_2"] \arrow[dd, "f"', shift right]        &   \\
+A &                                                                                & B \\
+  & A \times' B \arrow[ru, "\pi'_2"'] \arrow[lu, "\pi'_1"] \arrow[uu, "f^{-1}"', shift right] &
+\end{tikzcd}
+\]
+In some sense, this is an isomorphism that ``preserves'' or ``respects'' the product.
 \begin{proof}
   TODO
 \end{proof}
@@ -789,7 +882,7 @@ forms a category as follows:
   \[
     Obj(\mathbf{C} + \mathbf{D}) = Obj(\mathbf{C}) + Obj(\mathbf{D})
   \]
-\item An arrow in $\mathbf{C} + \mathbf{D}$ is 
+\item An arrow in $\mathbf{C} + \mathbf{D}$ is
 \end{itemize}
 
 \chapter{Limits and colimits}
